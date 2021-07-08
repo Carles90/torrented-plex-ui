@@ -11,18 +11,21 @@
           <ion-title size="large">Cercar</ion-title>
         </ion-toolbar>
       </ion-header>
-      
-      <ExploreContainer name="Tab 2 page" />
+
+      <ion-item>
+        <ion-icon slot="end" name="logo-ionic"></ion-icon>
+        <ion-label position="floating">¿Què vols descarregar?</ion-label>
+        <ion-input placeholder="Nom de la pel·lícula, sèrie..."></ion-input>
+      </ion-item>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import ExploreContainer from '@/components/ExploreContainer.vue';
+import {IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar} from '@ionic/vue';
 
-export default  {
+export default {
   name: 'Search',
-  components: { ExploreContainer, IonHeader, IonToolbar, IonTitle, IonContent, IonPage }
+  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon}
 }
 </script>

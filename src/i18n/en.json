@@ -1,0 +1,11 @@
+{
+  "downloads": {
+    "title": "Downloads",
+    "no_downloads": "There are no active downloads"
+  },
+  "search": {
+    "title": "Find",
+    "what_do_you_want_to_search": "What do you want to find?",
+    "example": "Name of the film, TV show..."
+  }
+}

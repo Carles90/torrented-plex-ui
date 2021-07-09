@@ -2,13 +2,13 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Descàrregues</ion-title>
+        <ion-title>{{$t('downloads.title')}}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Descàrregues</ion-title>
+          <ion-title size="large">{{$t('downloads.title')}}</ion-title>
         </ion-toolbar>
       </ion-header>
 
@@ -17,43 +17,42 @@
       </ion-item>
 
       <div v-if="downloads.length === 0" class="centered-message">
-        No hi ha cap descàrrega activa.
+        {{$t('downloads.no_downloads')}}
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import {IonContent, IonHeader, IonPage, IonTitle, IonToolbar} from '@ionic/vue';
-import {onMounted, ref, Ref} from 'vue';
-import axios from 'axios';
-import {DownloadDto} from "@/dto/downloadDto";
+  import {IonContent, IonHeader, IonPage, IonTitle, IonToolbar} from '@ionic/vue';
+  import {onMounted, ref, Ref} from 'vue';
+  import axios from 'axios';
+  import {DownloadDto} from "@/dto/downloadDto";
 
-export default {
-  name: 'Downloads',
-  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage},
-  setup() {
-    const downloads: Ref<DownloadDto[]> = ref([]);
+  export default {
+    name: 'Downloads',
+    components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage},
+    setup() {
+      const downloads: Ref<DownloadDto[]> = ref([]);
 
-    const getDownloads = () => {
-      console.log("GET", process.env);
-      axios.get("/download")
+      const getDownloads = () => {
+        axios.get("/download")
           .then(data => {
             downloads.value = data.data;
           })
           .catch(error => {
             console.error(error);
           });
-    };
+      };
 
-    onMounted(() => {
-      getDownloads();
-    });
+      onMounted(() => {
+        getDownloads();
+      });
 
-    return {
-      downloads,
-      getDownloads
+      return {
+        downloads,
+        getDownloads
+      }
     }
   }
-}
 </script>

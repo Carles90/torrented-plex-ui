@@ -6,6 +6,10 @@
   "search": {
     "title": "Cercar",
     "what_do_you_want_to_search": "Què vols cercar?",
-    "example": "Nom de la películ·la, sèrie..."
+    "example": "Nom de la películ·la, sèrie...",
+    "searching": "Cercant...",
+    "item_name": "Nom",
+    "item_size": "Mida",
+    "item_sources": "Fonts"
   }
 }

@@ -6,6 +6,10 @@
   "search": {
     "title": "Buscar",
     "what_do_you_want_to_search": "¿Qué quieres descargar?",
-    "example": "Nombre de la película, serie..."
+    "example": "Nombre de la película, serie...",
+    "searching": "Buscando...",
+    "item_name": "Nombre",
+    "item_size": "Tamaño",
+    "item_sources": "Fuentes"
   }
 }

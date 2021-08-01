@@ -1,0 +1,21 @@
+table.data-table {
+  max-width: 100%;
+  width: 100%;
+  table-layout: fixed;
+
+  tr {
+    th, td {
+      font-size: 0.75em;
+      padding: 0.5em;
+
+      &.nowrap {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    td {
+    }
+  }
+}

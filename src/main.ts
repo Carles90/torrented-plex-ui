@@ -25,21 +25,22 @@ import './theme/variables.css';
 // Set base URL
 axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
+// Configure languages
 const i18n = createI18n({
-  locale: 'ca',
-  fallbackLocale: 'en',
-  messages: {
-    ca: require('./i18n/ca.json'),
-    en: require('./i18n/en.json'),
-    es: require('./i18n/es.json')
-  },
+    locale: 'ca',
+    fallbackLocale: 'en',
+    messages: {
+        ca: require('./i18n/ca.json'),
+        en: require('./i18n/en.json'),
+        es: require('./i18n/es.json')
+    },
 });
 
 const app = createApp(App)
-  .use(IonicVue)
-  .use(router)
-  .use(i18n);
+    .use(IonicVue)
+    .use(router)
+    .use(i18n);
 
 router.isReady().then(() => {
-  app.mount('#app');
+    app.mount('#app');
 });

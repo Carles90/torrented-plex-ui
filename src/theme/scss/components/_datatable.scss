@@ -2,6 +2,7 @@ table.data-table {
   max-width: 100%;
   width: 100%;
   table-layout: fixed;
+  text-align: left;
 
   tr {
     th, td {
@@ -14,8 +15,29 @@ table.data-table {
         text-overflow: ellipsis;
       }
     }
+  }
 
-    td {
+  &.vertical-align-top {
+    tr {
+      td, th {
+        @extend .vertical-align-top;
+      }
+    }
+  }
+
+  &.vertical-align-middle {
+    tr {
+      td, th {
+        @extend .vertical-align-middle;
+      }
+    }
+  }
+
+  &.vertical-align-bottom {
+    tr {
+      td, th {
+        @extend .vertical-align-bottom;
+      }
     }
   }
 }

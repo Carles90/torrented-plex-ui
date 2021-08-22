@@ -4,12 +4,13 @@
     "no_downloads": "No hi ha cap descàrrega activa"
   },
   "search": {
-    "title": "Cercar",
-    "what_do_you_want_to_search": "Què vols cercar?",
+    "title": "Buscar",
+    "what_do_you_want_to_search": "Què vols buscar?",
     "example": "Nom de la películ·la, sèrie...",
-    "searching": "Cercant...",
+    "searching": "Buscant...",
     "item_name": "Nom",
     "item_size": "Mida",
-    "item_sources": "Fonts"
+    "item_sources": "Fonts",
+    "no_results": "No hi ha cap resultat disponible"
   }
 }

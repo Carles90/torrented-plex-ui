@@ -18,23 +18,59 @@
         <ion-input v-model="searchForm.value" @change="performSearch"></ion-input>
       </ion-item>
 
-      <table class="data-table">
+      <table v-if="searchResults && searchResults.length > 0" class="data-table">
         <thead>
         <tr>
-          <th class="text-left">Nom</th>
-          <th style="width: 75px;" class="text-right">Mida</th>
-          <th style="width: 50px;" class="text-right">Fonts</th>
+          <th class="text-left">{{ $t('search.item_name') }}</th>
+          <th style="width: 90px;" class="text-right">{{ $t('search.item_size') }}</th>
+          <th style="width: 60px;" class="text-right">{{ $t('search.item_sources') }}</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(result, idx) in searchResults" :key="idx">
+        <tr v-for="(result, idx) in searchResults" :key="idx" @click="askDownloadFile(idx)">
           <td class="text-left nowrap">{{ result.name }}</td>
           <td class="text-right">{{ sizeFormat(result.size) }}</td>
           <td class="text-right">{{ result.sources }}</td>
         </tr>
         </tbody>
       </table>
+
+      <div class="ion-padding" v-else-if="searchResults && searchResults.length === 0">
+        {{ $t('search.no_results') }}
+      </div>
+
     </ion-content>
+
+    <pop-card v-if="downloadingFile">
+      <h1>Començar descàrrega</h1>
+      <table class="data-table vertical-align-top">
+        <tbody>
+        <tr>
+          <th style="width: 60px;">{{ $t('search.item_name') }}:</th>
+          <td>{{ downloadingFile.name }}</td>
+        </tr>
+        <tr>
+          <th>{{ $t('search.item_size') }}:</th>
+          <td>{{ sizeFormat(downloadingFile.size) }}</td>
+        </tr>
+        <tr>
+          <th>{{ $t('search.item_sources') }}:</th>
+          <td>{{ downloadingFile.sources }}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button class="mt-3" expand="block" color="primary" @click="startDownload">Descarregar</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button class="mt-3" expand="block" color="light" @click="cancelDownload">Cancel·lar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </pop-card>
   </ion-page>
 </template>
 
@@ -44,19 +80,26 @@ import {onMounted, reactive, ref, Ref} from 'vue';
 import axios from 'axios';
 import {useI18n} from "vue-i18n";
 import numbro from "numbro";
+import PopCard from "@/components/PopCard.vue";
+import {SearchItemDto} from "@/dto/searchItemDto";
 
 export default {
   name: 'Search',
-  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, IonInput},
+  components: {PopCard, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, IonInput},
   setup() {
     const {t} = useI18n();
     const searchForm = reactive({
       value: ''
     });
-    const searchResults = ref([]);
+    const searchResults: Ref<SearchItemDto[]> = ref([]);
     const loading: Ref<HTMLIonLoadingElement | null> = ref(null);
+    const downloadingFile: Ref<any> = ref();
 
     const showLoading = async () => {
+      if (loading.value) {
+        return;
+      }
+
       loading.value = await loadingController.create({
         message: t('search.searching')
       });
@@ -70,6 +113,7 @@ export default {
       }
 
       loading.value.remove();
+      loading.value = null;
     };
 
     const refreshResults = () => {
@@ -93,7 +137,6 @@ export default {
       })
           .then(() => {
             setTimeout(() => {
-              showLoading();
               refreshResults();
             }, 2000);
           })
@@ -116,6 +159,32 @@ export default {
       }) + ' ' + unit;
     }
 
+    const askDownloadFile = (idx: number) => {
+      downloadingFile.value = searchResults.value[idx];
+    }
+
+    const cancelDownload = () => {
+      downloadingFile.value = null;
+    }
+
+    const startDownload = () => {
+      if (!downloadingFile.value) {
+        return;
+      }
+
+      showLoading();
+      axios.post("/download", {
+        index: downloadingFile.value.downloadIndex
+      })
+          .then(() => {
+            hideLoading();
+          })
+          .catch(error => {
+            hideLoading();
+            console.error(error);
+          });
+    }
+
     onMounted(() => {
       refreshResults();
     });
@@ -123,9 +192,13 @@ export default {
     return {
       searchForm,
       searchResults,
+      downloadingFile,
       performSearch,
       refreshResults,
-      sizeFormat
+      sizeFormat,
+      askDownloadFile,
+      cancelDownload,
+      startDownload
     }
   }
 }

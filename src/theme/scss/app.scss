@@ -1,9 +1,5 @@
+@import "variables";
+
+@import "base";
 @import "components/datatable";
-
-.text-right {
-  text-align: right;
-}
-
-.text-left {
-  text-align: left;
-}
+@import "components/popcard";

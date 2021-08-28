@@ -1,4 +1,9 @@
 {
+  "tabs": {
+    "downloads": "Downloads",
+    "search": "Search",
+    "status": "Status"
+  },
   "downloads": {
     "title": "Downloads",
     "no_downloads": "There are no active downloads"
@@ -8,8 +13,18 @@
     "what_do_you_want_to_search": "What do you want to find?",
     "example": "Name of the film, TV show...",
     "searching": "Searching...",
+    "downloading": "Starting download...",
     "item_name": "Name",
     "item_size": "Size",
-    "item_sources": "Sources"
+    "item_sources": "Sources",
+    "no_results": "There are no available results",
+    "download_card": {
+      "title": "Download file",
+      "download": "Download",
+      "cancel": "Cancel",
+      "item_name": "Name",
+      "item_size": "Size",
+      "item_sources": "Sources"
+    }
   }
 }

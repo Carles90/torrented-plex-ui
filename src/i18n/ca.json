@@ -1,4 +1,9 @@
 {
+  "tabs": {
+    "downloads": "Descàrregues",
+    "search": "Buscar",
+    "status": "Estat"
+  },
   "downloads": {
     "title": "Descàrregues",
     "no_downloads": "No hi ha cap descàrrega activa"
@@ -8,9 +13,18 @@
     "what_do_you_want_to_search": "Què vols buscar?",
     "example": "Nom de la películ·la, sèrie...",
     "searching": "Buscant...",
+    "downloading": "Començant descàrrega...",
     "item_name": "Nom",
     "item_size": "Mida",
     "item_sources": "Fonts",
-    "no_results": "No hi ha cap resultat disponible"
+    "no_results": "No hi ha cap resultat disponible",
+    "download_card": {
+      "title": "Començar descàrrega",
+      "download": "Descarregar",
+      "cancel": "Cancel·lar",
+      "item_name": "Nom",
+      "item_size": "Mida",
+      "item_sources": "Fonts"
+    }
   }
 }

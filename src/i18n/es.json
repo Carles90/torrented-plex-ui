@@ -1,4 +1,9 @@
 {
+  "tabs": {
+    "downloads": "Descargas",
+    "search": "Buscar",
+    "status": "Estado"
+  },
   "downloads": {
     "title": "Descargas",
     "no_downloads": "No hay ninguna descarga activa"
@@ -8,8 +13,18 @@
     "what_do_you_want_to_search": "¿Qué quieres descargar?",
     "example": "Nombre de la película, serie...",
     "searching": "Buscando...",
+    "downloading": "Iniciando descarga...",
     "item_name": "Nombre",
     "item_size": "Tamaño",
-    "item_sources": "Fuentes"
+    "item_sources": "Fuentes",
+    "no_results": "No hay ningún resultado disponible",
+    "download_card": {
+      "title": "Iniciar descarga",
+      "download": "Descargar",
+      "cancel": "Cancelar",
+      "item_name": "Nombre",
+      "item_size": "Tamaño",
+      "item_sources": "Fuentes"
+    }
   }
 }

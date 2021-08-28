@@ -42,19 +42,19 @@
     </ion-content>
 
     <pop-card v-if="downloadingFile">
-      <h1>Començar descàrrega</h1>
+      <h1>{{ $t('search.download_card.title') }}</h1>
       <table class="data-table vertical-align-top">
         <tbody>
         <tr>
-          <th style="width: 60px;">{{ $t('search.item_name') }}:</th>
+          <th style="width: 60px;">{{ $t('search.download_card.item_name') }}:</th>
           <td>{{ downloadingFile.name }}</td>
         </tr>
         <tr>
-          <th>{{ $t('search.item_size') }}:</th>
+          <th>{{ $t('search.download_card.item_size') }}:</th>
           <td>{{ sizeFormat(downloadingFile.size) }}</td>
         </tr>
         <tr>
-          <th>{{ $t('search.item_sources') }}:</th>
+          <th>{{ $t('search.download_card.item_sources') }}:</th>
           <td>{{ downloadingFile.sources }}</td>
         </tr>
         </tbody>
@@ -63,10 +63,14 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-button class="mt-3" expand="block" color="primary" @click="startDownload">Descarregar</ion-button>
+            <ion-button class="mt-3" expand="block" color="primary" @click="startDownload">
+              {{ $t('search.download_card.download') }}
+            </ion-button>
           </ion-col>
           <ion-col>
-            <ion-button class="mt-3" expand="block" color="light" @click="cancelDownload">Cancel·lar</ion-button>
+            <ion-button class="mt-3" expand="block" color="light" @click="cancelDownload">
+              {{ $t('search.download_card.cancel') }}
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -75,49 +79,75 @@
 </template>
 
 <script lang="ts">
-import {IonContent, IonHeader, IonIcon, IonInput, IonPage, IonTitle, IonToolbar, loadingController} from '@ionic/vue';
+import {
+  IonButton,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonPage,
+  IonRow,
+  IonTitle,
+  IonToolbar,
+  loadingController
+} from '@ionic/vue';
 import {onMounted, reactive, ref, Ref} from 'vue';
 import axios from 'axios';
 import {useI18n} from "vue-i18n";
 import numbro from "numbro";
 import PopCard from "@/components/PopCard.vue";
 import {SearchItemDto} from "@/dto/searchItemDto";
+import router from "@/router";
 
 export default {
   name: 'Search',
-  components: {PopCard, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, IonInput},
-  setup() {
+  components: {
+    PopCard,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonPage,
+    IonIcon,
+    IonInput,
+    IonRow,
+    IonCol,
+    IonGrid,
+    IonButton,
+    IonItem,
+    IonLabel
+  },
+  setup: function () {
     const {t} = useI18n();
     const searchForm = reactive({
       value: ''
     });
     const searchResults: Ref<SearchItemDto[]> = ref([]);
-    const loading: Ref<HTMLIonLoadingElement | null> = ref(null);
+    const loading: Ref<HTMLIonLoadingElement[]> = ref([]);
     const downloadingFile: Ref<any> = ref();
 
-    const showLoading = async () => {
-      if (loading.value) {
-        return;
-      }
-
-      loading.value = await loadingController.create({
-        message: t('search.searching')
+    const showLoading = async (text: string) => {
+      const loadingObj = await loadingController.create({
+        message: text
       });
 
-      loading.value.present();
+      loading.value.push(loadingObj);
+      await loadingObj.present();
     };
 
     const hideLoading = async () => {
-      if (!loading.value) {
-        return;
+      const loadingObj = loading.value.pop();
+      if (loadingObj) {
+        await loadingObj.remove();
       }
-
-      loading.value.remove();
-      loading.value = null;
     };
 
-    const refreshResults = () => {
-      showLoading();
+    const refreshResults = async () => {
+      await showLoading(t('search.searching'));
       axios.get("/search")
           .then(data => {
             searchResults.value = data.data;
@@ -125,23 +155,24 @@ export default {
           .catch(error => {
             console.error(error);
           })
-          .finally(() => {
-            hideLoading();
+          .finally(async () => {
+            await hideLoading();
           });
     };
 
-    const performSearch = () => {
-      showLoading();
+    const performSearch = async () => {
+      await showLoading(t('search.searching'));
       axios.post("/search", {
         query: searchForm.value
       })
           .then(() => {
-            setTimeout(() => {
-              refreshResults();
+            setTimeout(async () => {
+              await hideLoading();
+              await refreshResults();
             }, 2000);
           })
-          .catch(error => {
-            hideLoading();
+          .catch(async error => {
+            await hideLoading();
             console.error(error);
           });
     };
@@ -167,20 +198,22 @@ export default {
       downloadingFile.value = null;
     }
 
-    const startDownload = () => {
+    const startDownload = async () => {
       if (!downloadingFile.value) {
         return;
       }
 
-      showLoading();
+      await showLoading(t('search.downloading'));
       axios.post("/download", {
         index: downloadingFile.value.downloadIndex
       })
-          .then(() => {
-            hideLoading();
+          .then(async () => {
+            await hideLoading();
+            cancelDownload();
+            await router.push('downloads');
           })
-          .catch(error => {
-            hideLoading();
+          .catch(async error => {
+            await hideLoading();
             console.error(error);
           });
     }

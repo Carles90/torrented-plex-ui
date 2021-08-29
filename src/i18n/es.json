@@ -6,7 +6,27 @@
   },
   "downloads": {
     "title": "Descargas",
-    "no_downloads": "No hay ninguna descarga activa"
+    "no_downloads": "No hay ninguna descarga activa",
+    "loading": "Cargando...",
+    "users_sending": "U. Enviando",
+    "users_available": "U. Disponibles",
+    "users_total": "Total Usuarios",
+    "status": "Estado",
+    "priority": "Prioridad",
+    "speed": "Velocidad",
+    "statuses": {
+      "downloading": "Descargando",
+      "waiting": "Esperando Fuentes",
+      "paused": "Pausado"
+    },
+    "priorities": {
+      "auto_hi": "Alta (Auto)",
+      "auto_no": "Normal (Auto)",
+      "auto_lo": "Baja (Auto)",
+      "high": "Alta",
+      "normal": "Normal",
+      "low": "Baja"
+    }
   },
   "search": {
     "title": "Buscar",

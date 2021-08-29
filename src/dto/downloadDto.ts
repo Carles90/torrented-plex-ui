@@ -1,14 +1,15 @@
 export class DownloadDto {
-    private id = "";
-    private name = "";
-    private percent = 0;
-    private usersSending = 0;
-    private totalUsers = 0;
-    private status = "";
-    private internalFileName = "";
-    private priority = "";
-    private speed = "";
-
-    constructor() {
+    constructor(
+        public id: string,
+        public name: string,
+        public percent: number,
+        public usersSending: number,
+        public usersAvailable: number,
+        public usersTotal: number,
+        public status: string,
+        public internalFileName: string,
+        public priority: string,
+        public speed: number
+    ) {
     }
 }

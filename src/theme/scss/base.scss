@@ -41,3 +41,33 @@
 .mt-5 {
   margin-top: ($spacer * 2) !important;
 }
+
+.my-0 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.my-1 {
+  margin-top: ($spacer * 0.25) !important;
+  margin-bottom: ($spacer * 0.25) !important;
+}
+
+.my-2 {
+  margin-top: ($spacer * 0.5) !important;
+  margin-bottom: ($spacer * 0.5) !important;
+}
+
+.my-3 {
+  margin-top: ($spacer * 1) !important;
+  margin-bottom: ($spacer * 1) !important;
+}
+
+.my-4 {
+  margin-top: ($spacer * 1.5) !important;
+  margin-bottom: ($spacer * 1.5) !important;
+}
+
+.my-5 {
+  margin-top: ($spacer * 2) !important;
+  margin-bottom: ($spacer * 2) !important;
+}

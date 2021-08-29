@@ -6,7 +6,27 @@
   },
   "downloads": {
     "title": "Descàrregues",
-    "no_downloads": "No hi ha cap descàrrega activa"
+    "no_downloads": "No hi ha cap descàrrega activa",
+    "loading": "Carregant...",
+    "users_sending": "U. Enviant",
+    "users_available": "U. Disponibles",
+    "users_total": "Total Usuaris",
+    "status": "Estat",
+    "priority": "Prioritat",
+    "speed": "Velocitat",
+    "statuses": {
+      "downloading": "Baixant",
+      "waiting": "Esperant Fonts",
+      "paused": "Pausat"
+    },
+    "priorities": {
+      "auto_hi": "Alta (Auto)",
+      "auto_no": "Normal (Auto)",
+      "auto_lo": "Baixa (Auto)",
+      "high": "Alta",
+      "normal": "Normal",
+      "low": "Baixa"
+    }
   },
   "search": {
     "title": "Buscar",

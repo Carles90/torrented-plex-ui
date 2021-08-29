@@ -6,7 +6,27 @@
   },
   "downloads": {
     "title": "Downloads",
-    "no_downloads": "There are no active downloads"
+    "no_downloads": "There are no active downloads",
+    "loading": "Loading...",
+    "users_sending": "U. Sending",
+    "users_available": "U. Available",
+    "users_total": "Total Users",
+    "status": "Status",
+    "priority": "Priority",
+    "speed": "Speed",
+    "statuses": {
+      "downloading": "Downloading",
+      "waiting": "Waiting",
+      "paused": "Paused"
+    },
+    "priorities": {
+      "auto_hi": "High (Auto)",
+      "auto_no": "Normal (Auto)",
+      "auto_lo": "Low (Auto)",
+      "high": "High",
+      "normal": "Normal",
+      "low": "Low"
+    }
   },
   "search": {
     "title": "Find",

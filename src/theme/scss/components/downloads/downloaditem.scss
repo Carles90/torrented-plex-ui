@@ -1,0 +1,25 @@
+.download-item {
+  padding: $spacer;
+
+  + .download-item {
+    border-top: 1px solid $border-color;
+  }
+
+  .download-item-name {
+    font-size: 1em;
+    word-break: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .download-item-row {
+    display: flex;
+    padding: 4px 0;
+
+    .download-item-col {
+      font-size: 0.75em;
+      flex-basis: 100%;
+    }
+  }
+}

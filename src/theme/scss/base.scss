@@ -71,3 +71,10 @@
   margin-top: ($spacer * 2) !important;
   margin-bottom: ($spacer * 2) !important;
 }
+
+.text-ellipsis {
+  word-break: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

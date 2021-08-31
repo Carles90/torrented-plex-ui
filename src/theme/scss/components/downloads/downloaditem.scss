@@ -1,16 +1,17 @@
-.download-item {
+.download-item, .incoming-item {
   padding: $spacer;
 
-  + .download-item {
+  + .download-item, .incoming-item {
     border-top: 1px solid $border-color;
   }
 
-  .download-item-name {
+  &.selected {
+    background: $selected-background-color;
+  }
+
+  .download-item-name, .incoming-item-name {
+    @extend .text-ellipsis;
     font-size: 1em;
-    word-break: normal;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
   }
 
   .download-item-row {

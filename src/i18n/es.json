@@ -14,6 +14,10 @@
     "status": "Estado",
     "priority": "Prioridad",
     "speed": "Velocidad",
+    "pause": "Pausar",
+    "resume": "Resumir",
+    "delete": "Eliminar",
+    "order": "Ordenar",
     "statuses": {
       "downloading": "Descargando",
       "waiting": "Esperando Fuentes",

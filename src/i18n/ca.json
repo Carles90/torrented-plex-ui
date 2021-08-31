@@ -14,6 +14,10 @@
     "status": "Estat",
     "priority": "Prioritat",
     "speed": "Velocitat",
+    "pause": "Pausar",
+    "resume": "Resumir",
+    "delete": "Eliminar",
+    "order": "Ordenar",
     "statuses": {
       "downloading": "Baixant",
       "waiting": "Esperant Fonts",

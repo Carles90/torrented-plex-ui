@@ -27,7 +27,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(result, idx) in searchResults" :key="idx" @click="askDownloadFile(idx)">
+        <tr
+            v-for="(result, idx) in searchResults"
+            :key="idx"
+            @click="askDownloadFile(idx)"
+            :class="{selected: downloadingFile && downloadingFile.name === result.name}"
+        >
           <td class="text-left nowrap">{{ result.name }}</td>
           <td class="text-right">{{ sizeFormat(result.size) }}</td>
           <td class="text-right">{{ result.sources }}</td>
@@ -162,6 +167,7 @@ export default {
 
     const performSearch = async () => {
       await showLoading(t('search.searching'));
+      downloadingFile.value = null;
       axios.post("/search", {
         query: searchForm.value
       })

@@ -10,10 +10,12 @@ table.data-table {
       padding: 0.5em;
 
       &.nowrap {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        @extend .text-ellipsis;
       }
+    }
+
+    &.selected {
+      background: $selected-background-color;
     }
   }
 

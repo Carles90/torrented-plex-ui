@@ -1,7 +1,9 @@
 <template>
   <div class="download-item">
     <div class="download-item-name">{{ download.name }}</div>
-    <ion-progress-bar class="my-2" :value="download.percent / 100" :buffer="downloadBuffer()"/>
+    <ion-progress-bar v-if="isPaused()" class="my-2" color="medium" :value="download.percent / 100"/>
+    <ion-progress-bar v-else-if="isWaiting()" class="my-2" color="warning" :value="download.percent / 100"/>
+    <ion-progress-bar v-else class="my-2" color="primary" :value="download.percent / 100" :buffer="downloadBuffer()"/>
     <div class="download-item-row">
       <div class="download-item-col">
         {{ $t('downloads.users_sending') }}:<br/>
@@ -89,10 +91,20 @@ export default {
       return 1;
     }
 
+    const isPaused = () => {
+      return props.download.status === 'Paused';
+    }
+
+    const isWaiting = () => {
+      return props.download.status === 'Waiting';
+    }
+
     return {
       statusName,
       priority,
-      downloadBuffer
+      downloadBuffer,
+      isPaused,
+      isWaiting
     };
   }
 }

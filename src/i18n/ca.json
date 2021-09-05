@@ -21,8 +21,10 @@
     "pausing": "Pausant...",
     "resuming": "Resumint...",
     "cancelling": "Eliminant...",
+    "ordering": "Ordenant...",
+    "deleting": "Eliminant...",
     "order_file": {
-      "title": "Ordenar video",
+      "title": "Ordenar contingut",
       "order": "Ordenar",
       "cancel": "Cancel·lar",
       "movie": "Pel·lícula",

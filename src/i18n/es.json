@@ -21,6 +21,20 @@
     "pausing": "Pausando...",
     "resuming": "Resumiendo...",
     "cancelling": "Eliminando...",
+    "ordering": "Ordenando...",
+    "deleting": "Eliminando...",
+    "order_file": {
+      "title": "Ordenar contenido",
+      "order": "Ordenar",
+      "cancel": "Cancelar",
+      "movie": "Película",
+      "show": "Serie",
+      "which_show": "¿Qué serie?",
+      "select_show": "Seleccionar serie",
+      "other": "Otra",
+      "new_name_label": "Nombre de la serie",
+      "new_name": "Introduce un nombre"
+    },
     "statuses": {
       "downloading": "Descargando",
       "waiting": "Esperando Fuentes",

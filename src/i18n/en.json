@@ -21,6 +21,20 @@
     "pausing": "Pausing...",
     "resuming": "Resuming...",
     "cancelling": "Cancelling...",
+    "ordering": "Ordering...",
+    "deleting": "Deleting...",
+    "order_file": {
+      "title": "Order file",
+      "order": "Order",
+      "cancel": "Cancel",
+      "movie": "Movie",
+      "show": "TV Show",
+      "which_show": "Select TV Show",
+      "select_show": "Select TV Show",
+      "other": "Other",
+      "new_name_label": "Show name",
+      "new_name": "Enter a name"
+    },
     "statuses": {
       "downloading": "Downloading",
       "waiting": "Waiting",

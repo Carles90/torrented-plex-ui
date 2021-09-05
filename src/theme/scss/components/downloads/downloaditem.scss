@@ -1,7 +1,7 @@
-.download-item, .incoming-item {
+.download-item {
   padding: $spacer;
 
-  + .download-item, .incoming-item {
+  + .download-item {
     border-top: 1px solid $border-color;
   }
 
@@ -9,7 +9,7 @@
     background: $selected-background-color;
   }
 
-  .download-item-name, .incoming-item-name {
+  .download-item-name {
     @extend .text-ellipsis;
     font-size: 1em;
   }

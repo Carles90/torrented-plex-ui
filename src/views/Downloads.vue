@@ -105,7 +105,7 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-button expand="block" color="primary" :disabled="!canSubmitOrder">
+            <ion-button expand="block" color="primary" :disabled="!canSubmitOrder" @click="orderIncomingItem()">
               {{ $t('downloads.order_file.order') }}
             </ion-button>
           </ion-col>
@@ -126,11 +126,14 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
+  IonInput,
   IonList,
   IonPage,
   IonRadio,
   IonRadioGroup,
   IonRow,
+  IonSelect,
+  IonSelectOption,
   IonTitle,
   IonToolbar,
   loadingController,
@@ -162,8 +165,10 @@ export default {
     IonCol,
     IonList,
     IonRadioGroup,
-    IonRadio
-
+    IonRadio,
+    IonSelect,
+    IonSelectOption,
+    IonInput,
   },
   setup() {
     const {t} = useI18n();
@@ -333,7 +338,7 @@ export default {
 
       await showLoading(t('downloads.deleting'));
 
-      axios.post("/incoming", {
+      axios.post("/incoming/delete", {
         fileName: selectedIncoming.value.name
       })
           .then(() => {
@@ -362,11 +367,48 @@ export default {
       selectedIncoming.value = null;
     }
 
+    const getIncomingItemSelectedShow = () => {
+      if (selectedFileType.value !== 'show') {
+        return "";
+      }
+
+      if (selectedFileFolderName.value === 'other') {
+        return selectedFileNewFolderName.value;
+      }
+
+      return selectedFileFolderName.value;
+    }
+
+    const orderIncomingItem = async () => {
+      if (!selectedIncoming.value) {
+        return;
+      }
+
+      await showLoading(t('downloads.ordering'));
+
+      axios.post("/incoming/order", {
+        fileName: selectedIncoming.value.name,
+        type: selectedFileType.value,
+        show: getIncomingItemSelectedShow(),
+      })
+          .then(() => {
+            getDownloads(false);
+          })
+          .catch(error => {
+            console.error(error);
+          })
+          .finally(async () => {
+            await hideLoading();
+            selectedIncoming.value = null;
+            orderingFile.value = null;
+          });
+    }
+
     const canSubmitOrder = computed(() => {
       if (selectedFileType.value === 'movie') {
         return true;
       } else if (selectedFileType.value === 'show') {
-        if (!selectedFileFolderName.value) {
+        if (selectedFileFolderName.value === '') {
           return false;
         }
 
@@ -411,7 +453,8 @@ export default {
       cancelDownload,
       deleteIncoming,
       selectFileToOrder,
-      cancelOrderingFile
+      cancelOrderingFile,
+      orderIncomingItem
     }
   }
 }

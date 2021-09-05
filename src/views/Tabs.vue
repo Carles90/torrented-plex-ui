@@ -13,10 +13,10 @@
           <ion-label>{{ $t('tabs.search') }}</ion-label>
         </ion-tab-button>
 
-        <ion-tab-button tab="tab3" href="/status">
-          <ion-icon :icon="analyticsOutline"/>
-          <ion-label>{{ $t('tabs.status') }}</ion-label>
-        </ion-tab-button>
+        <!--        <ion-tab-button tab="tab3" href="/status">-->
+        <!--          <ion-icon :icon="analyticsOutline"/>-->
+        <!--          <ion-label>{{ $t('tabs.status') }}</ion-label>-->
+        <!--        </ion-tab-button>-->
       </ion-tab-bar>
     </ion-tabs>
   </ion-page>

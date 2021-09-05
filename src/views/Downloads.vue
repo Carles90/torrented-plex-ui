@@ -38,15 +38,16 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-button v-if="selectedDownload.status === 'Paused'" expand="block" color="success">
+            <ion-button v-if="selectedDownload.status === 'Paused'" expand="block" color="success"
+                        @click="resumeDownload()">
               {{ $t('downloads.resume') }}
             </ion-button>
-            <ion-button v-else expand="block" color="warning">
+            <ion-button v-else expand="block" color="warning" @click="pauseDownload()">
               {{ $t('downloads.pause') }}
             </ion-button>
           </ion-col>
           <ion-col>
-            <ion-button expand="block" color="danger">
+            <ion-button expand="block" color="danger" @click="cancelDownload()">
               {{ $t('downloads.delete') }}
             </ion-button>
           </ion-col>
@@ -199,9 +200,71 @@ export default {
       selectedIncoming.value = incoming;
     }
 
+    const pauseDownload = async () => {
+      if (!selectedDownload.value) {
+        return;
+      }
+
+      await showLoading(t('downloads.pausing'));
+
+      axios.post("/download/" + selectedDownload.value.id + "/pause")
+          .then(() => {
+            getDownloads(false);
+          })
+          .catch(error => {
+            console.error(error);
+          })
+          .finally(async () => {
+            await hideLoading();
+            selectedDownload.value = null;
+          });
+    }
+
+    const resumeDownload = async () => {
+      if (!selectedDownload.value) {
+        return;
+      }
+
+      await showLoading(t('downloads.resuming'));
+
+      axios.post("/download/" + selectedDownload.value.id + "/resume")
+          .then(() => {
+            getDownloads(false);
+          })
+          .catch(error => {
+            console.error(error);
+          })
+          .finally(async () => {
+            await hideLoading();
+            selectedDownload.value = null;
+          });
+    }
+
+    const cancelDownload = async () => {
+      if (!selectedDownload.value) {
+        return;
+      }
+
+      await showLoading(t('downloads.cancelling'));
+
+      axios.delete("/download/" + selectedDownload.value.id)
+          .then(() => {
+            getDownloads(false);
+          })
+          .catch(error => {
+            console.error(error);
+          })
+          .finally(async () => {
+            await hideLoading();
+            selectedDownload.value = null;
+          });
+    }
+
     onIonViewWillEnter(() => {
       getDownloads(true);
       startRefreshInterval();
+      selectedDownload.value = null;
+      selectedIncoming.value = null;
     });
 
     onIonViewWillLeave(() => {
@@ -215,7 +278,10 @@ export default {
       selectedIncoming,
       getDownloads,
       selectDownload,
-      selectIncoming
+      selectIncoming,
+      pauseDownload,
+      resumeDownload,
+      cancelDownload
     }
   }
 }

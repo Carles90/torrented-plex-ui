@@ -18,6 +18,9 @@
     "resume": "Resume",
     "delete": "Delete",
     "order": "Order",
+    "pausing": "Pausing...",
+    "resuming": "Resuming...",
+    "cancelling": "Cancelling...",
     "statuses": {
       "downloading": "Downloading",
       "waiting": "Waiting",

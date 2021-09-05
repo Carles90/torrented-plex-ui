@@ -18,6 +18,9 @@
     "resume": "Resumir",
     "delete": "Eliminar",
     "order": "Ordenar",
+    "pausing": "Pausant...",
+    "resuming": "Resumint...",
+    "cancelling": "Eliminant...",
     "statuses": {
       "downloading": "Baixant",
       "waiting": "Esperant Fonts",

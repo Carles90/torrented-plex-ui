@@ -18,6 +18,9 @@
     "resume": "Resumir",
     "delete": "Eliminar",
     "order": "Ordenar",
+    "pausing": "Pausando...",
+    "resuming": "Resumiendo...",
+    "cancelling": "Eliminando...",
     "statuses": {
       "downloading": "Descargando",
       "waiting": "Esperando Fuentes",

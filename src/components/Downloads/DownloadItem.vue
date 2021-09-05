@@ -39,10 +39,13 @@
 <script>
 import {DownloadDto} from "@/dto/downloadDto";
 import {useI18n} from "vue-i18n";
+import {IonProgressBar} from "@ionic/vue";
 
 export default {
   name: "DownloadItem",
-  components: {},
+  components: {
+    IonProgressBar
+  },
   props: {
     download: {
       type: DownloadDto

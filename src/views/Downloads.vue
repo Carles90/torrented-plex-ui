@@ -61,13 +61,57 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-button expand="block" color="primary">
+            <ion-button expand="block" color="primary" @click="selectFileToOrder()">
               {{ $t('downloads.order') }}
             </ion-button>
           </ion-col>
           <ion-col>
-            <ion-button expand="block" color="danger">
+            <ion-button expand="block" color="danger" @click="deleteIncoming()">
               {{ $t('downloads.delete') }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </pop-card>
+
+    <pop-card v-if="orderingFile">
+      <h1>{{ $t('downloads.order_file.title') }}</h1>
+      <p class="text-ellipsis">{{ selectedIncoming.name }}</p>
+      <ion-list>
+        <ion-radio-group v-model="selectedFileType">
+          <ion-item>
+            <ion-label>{{ $t('downloads.order_file.movie') }}</ion-label>
+            <ion-radio slot="start" value="movie"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>{{ $t('downloads.order_file.show') }}</ion-label>
+            <ion-radio slot="start" value="show"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+
+      <template v-if="selectedFileType === 'show'">
+        <p>{{ $t('downloads.order_file.which_show') }}</p>
+        <ion-select v-model="selectedFileFolderName" :placeholder="$t('downloads.order_file.select_show')">
+          <ion-select-option v-for="show in shows" :value="show" :key="show">{{ show }}</ion-select-option>
+          <ion-select-option value="other">{{ $t('downloads.order_file.other') }}</ion-select-option>
+        </ion-select>
+        <template v-if="selectedFileFolderName === 'other'">
+          <p>{{ $t('downloads.order_file.new_name_label') }}</p>
+          <ion-input v-model="selectedFileNewFolderName" :placeholder="$t('downloads.order_file.new_name')"/>
+        </template>
+      </template>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" color="primary" :disabled="!canSubmitOrder">
+              {{ $t('downloads.order_file.order') }}
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" color="light" @click="cancelOrderingFile()">
+              {{ $t('downloads.order_file.cancel') }}
             </ion-button>
           </ion-col>
         </ion-row>
@@ -82,7 +126,10 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
+  IonList,
   IonPage,
+  IonRadio,
+  IonRadioGroup,
   IonRow,
   IonTitle,
   IonToolbar,
@@ -90,7 +137,7 @@ import {
   onIonViewWillEnter,
   onIonViewWillLeave
 } from '@ionic/vue';
-import {ref, Ref} from 'vue';
+import {computed, ref, Ref} from 'vue';
 import axios from 'axios';
 import {DownloadDto} from "@/dto/downloadDto";
 import DownloadItem from "@/components/Downloads/DownloadItem.vue";
@@ -112,16 +159,25 @@ export default {
     IonPage,
     IonGrid,
     IonRow,
-    IonCol
+    IonCol,
+    IonList,
+    IonRadioGroup,
+    IonRadio
+
   },
   setup() {
     const {t} = useI18n();
     const downloads: Ref<DownloadDto[]> = ref([]);
     const incomings: Ref<IncomingDto[]> = ref([]);
+    const shows: Ref<string[]> = ref([]);
     const refreshInterval: Ref<number | null> = ref(null);
     const loading: Ref<HTMLIonLoadingElement[]> = ref([]);
     const selectedDownload: Ref<DownloadDto | null> = ref(null);
     const selectedIncoming: Ref<IncomingDto | null> = ref(null);
+    const orderingFile: Ref<IncomingDto | null> = ref(null);
+    const selectedFileType: Ref<string> = ref('movie');
+    const selectedFileFolderName: Ref<string> = ref('');
+    const selectedFileNewFolderName: Ref<string> = ref('');
 
     const showLoading = async (text: string) => {
       const loadingObj = await loadingController.create({
@@ -137,6 +193,16 @@ export default {
       if (loadingObj) {
         await loadingObj.remove();
       }
+    };
+
+    const getShows = async () => {
+      axios.get("/incoming/shows")
+          .then(data => {
+            shows.value = data.data;
+          })
+          .catch(error => {
+            console.error(error);
+          });
     };
 
     const getIncomings = async (showLoader: boolean) => {
@@ -260,7 +326,62 @@ export default {
           });
     }
 
+    const deleteIncoming = async () => {
+      if (!selectedIncoming.value) {
+        return;
+      }
+
+      await showLoading(t('downloads.deleting'));
+
+      axios.post("/incoming", {
+        fileName: selectedIncoming.value.name
+      })
+          .then(() => {
+            getDownloads(false);
+          })
+          .catch(error => {
+            console.error(error);
+          })
+          .finally(async () => {
+            await hideLoading();
+            selectedIncoming.value = null;
+          });
+    }
+
+    const selectFileToOrder = () => {
+      if (!selectedIncoming.value) {
+        return;
+      }
+
+      orderingFile.value = selectedIncoming.value;
+      selectedFileType.value = 'movie';
+    }
+
+    const cancelOrderingFile = () => {
+      orderingFile.value = null;
+      selectedIncoming.value = null;
+    }
+
+    const canSubmitOrder = computed(() => {
+      if (selectedFileType.value === 'movie') {
+        return true;
+      } else if (selectedFileType.value === 'show') {
+        if (!selectedFileFolderName.value) {
+          return false;
+        }
+
+        if (selectedFileFolderName.value === 'other') {
+          return selectedFileNewFolderName.value !== '';
+        }
+
+        return true;
+      }
+
+      return false;
+    });
+
     onIonViewWillEnter(() => {
+      getShows();
       getDownloads(true);
       startRefreshInterval();
       selectedDownload.value = null;
@@ -272,16 +393,25 @@ export default {
     });
 
     return {
+      shows,
       downloads,
       incomings,
       selectedDownload,
       selectedIncoming,
+      orderingFile,
+      selectedFileType,
+      selectedFileFolderName,
+      selectedFileNewFolderName,
+      canSubmitOrder,
       getDownloads,
       selectDownload,
       selectIncoming,
       pauseDownload,
       resumeDownload,
-      cancelDownload
+      cancelDownload,
+      deleteIncoming,
+      selectFileToOrder,
+      cancelOrderingFile
     }
   }
 }

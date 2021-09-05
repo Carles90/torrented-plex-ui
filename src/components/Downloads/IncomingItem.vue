@@ -7,10 +7,13 @@
 
 <script>
 import {IncomingDto} from "@/dto/incomingDto";
+import {IonProgressBar} from "@ionic/vue";
 
 export default {
   name: "IncomingItem",
-  components: {},
+  components: {
+    IonProgressBar
+  },
   props: {
     incoming: {
       type: IncomingDto

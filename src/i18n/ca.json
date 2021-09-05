@@ -21,6 +21,18 @@
     "pausing": "Pausant...",
     "resuming": "Resumint...",
     "cancelling": "Eliminant...",
+    "order_file": {
+      "title": "Ordenar video",
+      "order": "Ordenar",
+      "cancel": "Cancel·lar",
+      "movie": "Pel·lícula",
+      "show": "Sèrie",
+      "which_show": "Quina sèrie?",
+      "select_show": "Selecciona sèrie",
+      "other": "Una altra",
+      "new_name_label": "Nom de la sèrie",
+      "new_name": "Introdueix un nom"
+    },
     "statuses": {
       "downloading": "Baixant",
       "waiting": "Esperant Fonts",

@@ -23,7 +23,7 @@
         <tr>
           <th class="text-left">{{ $t('search.item_name') }}</th>
           <th style="width: 90px;" class="text-right">{{ $t('search.item_size') }}</th>
-          <th style="width: 60px;" class="text-right">{{ $t('search.item_sources') }}</th>
+          <th style="width: 60px;" class="text-right">{{ $t('search.item_seeders') }}</th>
         </tr>
         </thead>
         <tbody>
@@ -31,11 +31,11 @@
             v-for="(result, idx) in searchResults"
             :key="idx"
             @click="askDownloadFile(idx)"
-            :class="{selected: downloadingFile && downloadingFile.name === result.name}"
+            :class="{selected: downloadingFile && downloadingFileIdx === idx}"
         >
-          <td class="text-left nowrap">{{ result.name }}</td>
-          <td class="text-right">{{ sizeFormat(result.size) }}</td>
-          <td class="text-right">{{ result.sources }}</td>
+          <td class="text-left nowrap">{{ result.title }}</td>
+          <td class="text-right">{{ toSize(result.size) }}</td>
+          <td class="text-right">{{ result.seeders }}</td>
         </tr>
         </tbody>
       </table>
@@ -51,16 +51,24 @@
       <table class="data-table vertical-align-top">
         <tbody>
         <tr>
-          <th style="width: 60px;">{{ $t('search.download_card.item_name') }}:</th>
-          <td>{{ downloadingFile.name }}</td>
+          <th style="width: 70px;">{{ $t('search.download_card.item_name') }}:</th>
+          <td>{{ downloadingFile.title }}</td>
         </tr>
         <tr>
           <th>{{ $t('search.download_card.item_size') }}:</th>
-          <td>{{ sizeFormat(downloadingFile.size) }}</td>
+          <td>{{ toSize(downloadingFile.size) }}</td>
         </tr>
         <tr>
-          <th>{{ $t('search.download_card.item_sources') }}:</th>
-          <td>{{ downloadingFile.sources }}</td>
+          <th>{{ $t('search.download_card.item_seeders') }}:</th>
+          <td>{{ downloadingFile.seeders }}</td>
+        </tr>
+        <tr>
+          <th>{{ $t('search.download_card.item_leechers') }}:</th>
+          <td>{{ downloadingFile.peers }}</td>
+        </tr>
+        <tr>
+          <th>{{ $t('search.download_card.item_tracker') }}:</th>
+          <td>{{ downloadingFile.tracker }}</td>
         </tr>
         </tbody>
       </table>
@@ -100,7 +108,7 @@ import {
   IonToolbar,
   loadingController
 } from '@ionic/vue';
-import {onMounted, reactive, ref, Ref} from 'vue';
+import {reactive, ref, Ref} from 'vue';
 import axios from 'axios';
 import {useI18n} from "vue-i18n";
 import numbro from "numbro";
@@ -134,6 +142,7 @@ export default {
     const searchResults: Ref<SearchItemDto[]> = ref([]);
     const loading: Ref<HTMLIonLoadingElement[]> = ref([]);
     const downloadingFile: Ref<any> = ref();
+    const downloadingFileIdx: Ref<number | null> = ref(null);
 
     const showLoading = async (text: string) => {
       const loadingObj = await loadingController.create({
@@ -151,31 +160,16 @@ export default {
       }
     };
 
-    const refreshResults = async () => {
-      await showLoading(t('search.searching'));
-      axios.get("/search")
-          .then(data => {
-            searchResults.value = data.data;
-          })
-          .catch(error => {
-            console.error(error);
-          })
-          .finally(async () => {
-            await hideLoading();
-          });
-    };
-
     const performSearch = async () => {
       await showLoading(t('search.searching'));
       downloadingFile.value = null;
+      downloadingFileIdx.value = null;
       axios.post("/search", {
         query: searchForm.value
       })
-          .then(() => {
-            setTimeout(async () => {
-              await hideLoading();
-              await refreshResults();
-            }, 2000);
+          .then(async (data: any) => {
+            await hideLoading();
+            searchResults.value = data.data;
           })
           .catch(async error => {
             await hideLoading();
@@ -183,25 +177,39 @@ export default {
           });
     };
 
-    const sizeFormat = (value: number) => {
-      let unit = 'MB';
-      if (value > 1000) {
-        value = value / 1024;
+    const toSize = (v: number) => {
+      let val = v;
+      let unit = 'B';
+      let mantissa = 0;
+
+      if (val > 1073741824) {
+        val = val / 1073741824;
         unit = 'GB';
+        mantissa = 2;
+      } else if (val > 1048576) {
+        val = val / 1048576;
+        unit = 'MB';
+        mantissa = 2;
+      } else if (val > 1024) {
+        val = val / 1024;
+        unit = 'kB';
+        mantissa = 2;
       }
 
-      return numbro(value).format({
+      return numbro(val).format({
         thousandSeparated: true,
-        mantissa: 2,
+        mantissa: mantissa,
       }) + ' ' + unit;
     }
 
     const askDownloadFile = (idx: number) => {
       downloadingFile.value = searchResults.value[idx];
+      downloadingFileIdx.value = idx;
     }
 
     const cancelDownload = () => {
       downloadingFile.value = null;
+      downloadingFileIdx.value = null;
     }
 
     const startDownload = async () => {
@@ -211,7 +219,7 @@ export default {
 
       await showLoading(t('search.downloading'));
       axios.post("/download", {
-        index: downloadingFile.value.downloadIndex
+        link: downloadingFile.value.link
       })
           .then(async () => {
             await hideLoading();
@@ -224,17 +232,13 @@ export default {
           });
     }
 
-    onMounted(() => {
-      refreshResults();
-    });
-
     return {
       searchForm,
       searchResults,
       downloadingFile,
+      downloadingFileIdx,
       performSearch,
-      refreshResults,
-      sizeFormat,
+      toSize,
       askDownloadFile,
       cancelDownload,
       startDownload

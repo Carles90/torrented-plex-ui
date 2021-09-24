@@ -1,38 +1,42 @@
 <template>
   <div class="download-item">
     <div class="download-item-name">{{ download.name }}</div>
-    <ion-progress-bar v-if="isPaused()" class="my-2" color="medium" :value="download.percent / 100"/>
-    <ion-progress-bar v-else-if="isWaiting()" class="my-2" color="warning" :value="download.percent / 100"/>
-    <ion-progress-bar v-else class="my-2" color="primary" :value="download.percent / 100" :buffer="downloadBuffer()"/>
-    <div class="download-item-row">
-      <div class="download-item-col">
-        {{ $t('downloads.users_sending') }}:<br/>
-        <b>{{ download.usersSending }}</b>
+    <ion-progress-bar v-if="isCompleted()" class="my-2" color="success" :value="download.progress"/>
+    <ion-progress-bar v-else-if="isPaused()" class="my-2" color="medium" :value="download.progress"/>
+    <ion-progress-bar v-else-if="isWaiting()" class="my-2" color="warning" :value="download.progress"/>
+    <ion-progress-bar v-else class="my-2" color="primary" :value="download.progress" :buffer="downloadBuffer()"/>
+
+    <template v-if="!isCompleted()">
+      <div class="download-item-row">
+        <div class="download-item-col">
+          {{ $t('downloads.seeds') }}:<br/>
+          <b>{{ download.seeds }}</b>
+        </div>
+        <div class="download-item-col">
+          {{ $t('downloads.leechs') }}:<br/>
+          <b>{{ download.leechs }}</b>
+        </div>
+        <div class="download-item-col">
+          {{ $t('downloads.status') }}:<br/>
+          <b>{{ statusName() }}</b>
+        </div>
       </div>
-      <div class="download-item-col">
-        {{ $t('downloads.users_available') }}:<br/>
-        <b>{{ download.usersAvailable }}</b>
+      <div class="download-item-row">
+        <div class="download-item-col">
+          {{ $t('downloads.speed') }}:<br/>
+          <b>{{ toSpeed(download.downloadSpeed) }}</b>
+        </div>
+        <div class="download-item-col">
+          {{ $t('downloads.downloaded') }}:<br/>
+          <b>{{ toSize(download.downloaded) }} / {{ toSize(download.size) }}</b>
+        </div>
+        <div class="download-item-col">
+          {{ $t('downloads.eta') }}:<br/>
+          <b v-if="download.state === 'downloading'">{{ toTime(download.eta) }}</b>
+          <b v-else>-</b>
+        </div>
       </div>
-      <div class="download-item-col">
-        {{ $t('downloads.users_total') }}:<br/>
-        <b>{{ download.usersTotal }}</b>
-      </div>
-    </div>
-    <div class="download-item-row">
-      <div class="download-item-col">
-        {{ $t('downloads.status') }}:<br/>
-        <b>{{ statusName() }}</b>
-      </div>
-      <div class="download-item-col">
-        {{ $t('downloads.priority') }}:<br/>
-        <b>{{ priority() }}</b>
-      </div>
-      <div class="download-item-col">
-        {{ $t('downloads.speed') }}:<br/>
-        <b v-if="download.speed">{{ download.speed }}</b>
-        <b v-else>0 B/s</b>
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -40,6 +44,7 @@
 import {DownloadDto} from "@/dto/downloadDto";
 import {useI18n} from "vue-i18n";
 import {IonProgressBar} from "@ionic/vue";
+import numbro from "numbro";
 
 export default {
   name: "DownloadItem",
@@ -55,59 +60,118 @@ export default {
     const {t} = useI18n();
 
     const statusName = () => {
-      switch (props.download.status) {
-        case "Downloading":
+      switch (props.download.state) {
+        case "downloading":
           return t('downloads.statuses.downloading');
-        case "Waiting":
-          return t('downloads.statuses.waiting');
-        case "Paused":
+        case "stalledDL":
+          return t('downloads.statuses.stalled');
+        case "pausedDL":
           return t('downloads.statuses.paused');
       }
 
-      return props.download.status;
-    };
-
-    const priority = () => {
-      switch (props.download.priority) {
-        case "Auto [Hi]":
-          return t('downloads.priorities.auto_hi');
-        case "Auto [No]":
-          return t('downloads.priorities.auto_no');
-        case "Auto [Lo]":
-          return t('downloads.priorities.auto_lo');
-        case "High":
-          return t('downloads.priorities.high');
-        case "Normal":
-          return t('downloads.priorities.normal');
-        case "Low":
-          return t('downloads.priorities.low');
-      }
-
-      return props.download.priority;
+      return props.download.state;
     };
 
     const downloadBuffer = () => {
-      if (props.download.status === 'Downloading') {
-        return props.download.percent / 100;
+      if (props.download.state === 'downloading') {
+        return props.download.progress;
       }
 
       return 1;
     }
 
+    const isCompleted = () => {
+      return props.download.progress === 1;
+    }
+
     const isPaused = () => {
-      return props.download.status === 'Paused';
+      return props.download.state === 'pausedDL';
     }
 
     const isWaiting = () => {
-      return props.download.status === 'Waiting';
+      return props.download.status === 'stalledDL';
+    }
+
+    const toSpeed = (v) => {
+      let val = v;
+      let unit = 'B/s';
+      let mantissa = 0;
+
+      if (val > 1048576) {
+        val = val / 1048576;
+        unit = 'MB/s';
+        mantissa = 2;
+      } else if (val > 1024) {
+        val = val / 1024;
+        unit = 'kB/s';
+        mantissa = 2;
+      }
+
+      return numbro(val).format({
+        thousandSeparated: true,
+        mantissa: mantissa,
+      }) + ' ' + unit;
+    }
+
+    const toSize = (v) => {
+      let val = v;
+      let unit = 'B';
+      let mantissa = 0;
+
+      if (val > 1073741824) {
+        val = val / 1073741824;
+        unit = 'GB';
+        mantissa = 2;
+      } else if (val > 1048576) {
+        val = val / 1048576;
+        unit = 'MB';
+        mantissa = 2;
+      } else if (val > 1024) {
+        val = val / 1024;
+        unit = 'kB';
+        mantissa = 2;
+      }
+
+      return numbro(val).format({
+        thousandSeparated: true,
+        mantissa: mantissa,
+      }) + ' ' + unit;
+    }
+
+    const toTime = (v) => {
+      let val = v;
+      let unit = 's';
+      let mantissa = 0;
+
+      if (val > 86400) {
+        val = val / 86400;
+        unit = 'd';
+        mantissa = 2;
+      } else if (val > 3600) {
+        val = val / 3600;
+        unit = 'h';
+        mantissa = 2;
+      } else if (val > 60) {
+        val = val / 60;
+        unit = 'm';
+        mantissa = 0;
+      }
+
+      return numbro(val).format({
+        thousandSeparated: true,
+        mantissa: mantissa,
+      }) + ' ' + unit;
     }
 
     return {
       statusName,
-      priority,
       downloadBuffer,
+      isCompleted,
       isPaused,
-      isWaiting
+      isWaiting,
+      toSpeed,
+      toSize,
+      toTime
     };
   }
 }

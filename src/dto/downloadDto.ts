@@ -2,14 +2,14 @@ export class DownloadDto {
     constructor(
         public id: string,
         public name: string,
-        public percent: number,
-        public usersSending: number,
-        public usersAvailable: number,
-        public usersTotal: number,
-        public status: string,
-        public internalFileName: string,
-        public priority: string,
-        public speed: number
+        public state: string,
+        public seeds: number,
+        public leechs: number,
+        public downloadSpeed: number,
+        public size: number,
+        public downloaded: number,
+        public progress: number,
+        public eta: number,
     ) {
     }
 }

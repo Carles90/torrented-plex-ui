@@ -8,56 +8,36 @@
     "title": "Descàrregues",
     "no_downloads": "No hi ha cap descàrrega activa",
     "loading": "Carregant...",
-    "users_sending": "U. Enviant",
-    "users_available": "U. Disponibles",
+    "seeds": "Seeds",
+    "leechs": "Leechers",
     "users_total": "Total Usuaris",
     "status": "Estat",
     "priority": "Prioritat",
     "speed": "Velocitat",
+    "downloaded": "Descarregat",
+    "eta": "ETA",
     "pause": "Pausar",
     "resume": "Resumir",
     "delete": "Eliminar",
-    "order": "Ordenar",
     "pausing": "Pausant...",
     "resuming": "Resumint...",
     "cancelling": "Eliminant...",
-    "ordering": "Ordenant...",
     "deleting": "Eliminant...",
-    "order_file": {
-      "title": "Ordenar contingut",
-      "order": "Ordenar",
-      "cancel": "Cancel·lar",
-      "movie": "Pel·lícula",
-      "show": "Sèrie",
-      "which_show": "Quina sèrie?",
-      "select_show": "Selecciona sèrie",
-      "other": "Una altra",
-      "new_name_label": "Nom de la sèrie",
-      "new_name": "Introdueix un nom"
-    },
     "statuses": {
       "downloading": "Baixant",
-      "waiting": "Esperant Fonts",
+      "stalled": "Aturat",
       "paused": "Pausat"
-    },
-    "priorities": {
-      "auto_hi": "Alta (Auto)",
-      "auto_no": "Normal (Auto)",
-      "auto_lo": "Baixa (Auto)",
-      "high": "Alta",
-      "normal": "Normal",
-      "low": "Baixa"
     }
   },
   "search": {
     "title": "Buscar",
     "what_do_you_want_to_search": "Què vols buscar?",
-    "example": "Nom de la películ·la, sèrie...",
+    "example": "Nom de la pel·lícula, sèrie...",
     "searching": "Buscant...",
     "downloading": "Començant descàrrega...",
     "item_name": "Nom",
     "item_size": "Mida",
-    "item_sources": "Fonts",
+    "item_seeders": "Seeders",
     "no_results": "No hi ha cap resultat disponible",
     "download_card": {
       "title": "Començar descàrrega",
@@ -65,7 +45,9 @@
       "cancel": "Cancel·lar",
       "item_name": "Nom",
       "item_size": "Mida",
-      "item_sources": "Fonts"
+      "item_seeders": "Seeders",
+      "item_leechers": "Leechers",
+      "item_tracker": "Tracker"
     }
   }
 }

@@ -1,5 +1,7 @@
 {
-  "name": "amule-plex-ui",
-  "integrations": {},
+  "name": "torrented-plex-ui",
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "vue"
 }

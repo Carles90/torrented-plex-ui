@@ -14,11 +14,17 @@
 
 
       <download-item
-          v-for="download in downloads"
+          v-for="download in activeDownloads"
           :key="download.id"
           :download="download"
           @click="selectDownload(download)"
           :class="{selected: selectedDownload && selectedDownload.id === download.id}"
+      />
+
+      <download-item
+          v-for="download in finishedDownloads"
+          :key="download.id"
+          :download="download"
       />
 
       <div v-if="downloads.length === 0" class="ion-padding">
@@ -65,7 +71,7 @@ import {
   onIonViewWillEnter,
   onIonViewWillLeave
 } from '@ionic/vue';
-import {ref, Ref} from 'vue';
+import {computed, ref, Ref} from 'vue';
 import axios from 'axios';
 import {DownloadDto} from "@/dto/downloadDto";
 import DownloadItem from "@/components/Downloads/DownloadItem.vue";
@@ -92,6 +98,14 @@ export default {
     const refreshInterval: Ref<number | null> = ref(null);
     const loading: Ref<HTMLIonLoadingElement[]> = ref([]);
     const selectedDownload: Ref<DownloadDto | null> = ref(null);
+
+    const activeDownloads = computed(() => {
+      return downloads.value.filter(d => d.progress < 1);
+    });
+
+    const finishedDownloads = computed(() => {
+      return downloads.value.filter(d => d.progress === 1);
+    });
 
     const showLoading = async (text: string) => {
       const loadingObj = await loadingController.create({
@@ -220,6 +234,8 @@ export default {
     return {
       downloads,
       selectedDownload,
+      activeDownloads,
+      finishedDownloads,
       getDownloads,
       selectDownload,
       pauseDownload,

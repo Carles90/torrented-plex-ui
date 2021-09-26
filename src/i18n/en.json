@@ -8,45 +8,24 @@
     "title": "Downloads",
     "no_downloads": "There are no active downloads",
     "loading": "Loading...",
-    "users_sending": "U. Sending",
-    "users_available": "U. Available",
-    "users_total": "Total Users",
+    "seeds": "Seeds",
+    "leechs": "Leechers",
     "status": "Status",
     "priority": "Priority",
     "speed": "Speed",
+    "downloaded": "Downloaded",
+    "eta": "ETA",
     "pause": "Pause",
     "resume": "Resume",
     "delete": "Delete",
-    "order": "Order",
     "pausing": "Pausing...",
     "resuming": "Resuming...",
     "cancelling": "Cancelling...",
-    "ordering": "Ordering...",
     "deleting": "Deleting...",
-    "order_file": {
-      "title": "Order file",
-      "order": "Order",
-      "cancel": "Cancel",
-      "movie": "Movie",
-      "show": "TV Show",
-      "which_show": "Select TV Show",
-      "select_show": "Select TV Show",
-      "other": "Other",
-      "new_name_label": "Show name",
-      "new_name": "Enter a name"
-    },
     "statuses": {
       "downloading": "Downloading",
-      "waiting": "Waiting",
+      "stalled": "Stalled",
       "paused": "Paused"
-    },
-    "priorities": {
-      "auto_hi": "High (Auto)",
-      "auto_no": "Normal (Auto)",
-      "auto_lo": "Low (Auto)",
-      "high": "High",
-      "normal": "Normal",
-      "low": "Low"
     }
   },
   "search": {
@@ -57,7 +36,7 @@
     "downloading": "Starting download...",
     "item_name": "Name",
     "item_size": "Size",
-    "item_sources": "Sources",
+    "item_seeders": "Seeders",
     "no_results": "There are no available results",
     "download_card": {
       "title": "Download file",
@@ -65,7 +44,9 @@
       "cancel": "Cancel",
       "item_name": "Name",
       "item_size": "Size",
-      "item_sources": "Sources"
+      "item_seeders": "Seeders",
+      "item_leechers": "Leechers",
+      "item_tracker": "Tracker"
     }
   }
 }

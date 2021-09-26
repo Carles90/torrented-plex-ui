@@ -8,45 +8,24 @@
     "title": "Descargas",
     "no_downloads": "No hay ninguna descarga activa",
     "loading": "Cargando...",
-    "users_sending": "U. Enviando",
-    "users_available": "U. Disponibles",
-    "users_total": "Total Usuarios",
+    "seeds": "Semillas",
+    "leechs": "Compis",
     "status": "Estado",
     "priority": "Prioridad",
     "speed": "Velocidad",
+    "downloaded": "Descargado",
+    "eta": "ETA",
     "pause": "Pausar",
     "resume": "Resumir",
     "delete": "Eliminar",
-    "order": "Ordenar",
     "pausing": "Pausando...",
     "resuming": "Resumiendo...",
     "cancelling": "Eliminando...",
-    "ordering": "Ordenando...",
     "deleting": "Eliminando...",
-    "order_file": {
-      "title": "Ordenar contenido",
-      "order": "Ordenar",
-      "cancel": "Cancelar",
-      "movie": "Película",
-      "show": "Serie",
-      "which_show": "¿Qué serie?",
-      "select_show": "Seleccionar serie",
-      "other": "Otra",
-      "new_name_label": "Nombre de la serie",
-      "new_name": "Introduce un nombre"
-    },
     "statuses": {
       "downloading": "Descargando",
-      "waiting": "Esperando Fuentes",
+      "stalled": "Estancado",
       "paused": "Pausado"
-    },
-    "priorities": {
-      "auto_hi": "Alta (Auto)",
-      "auto_no": "Normal (Auto)",
-      "auto_lo": "Baja (Auto)",
-      "high": "Alta",
-      "normal": "Normal",
-      "low": "Baja"
     }
   },
   "search": {
@@ -57,7 +36,7 @@
     "downloading": "Iniciando descarga...",
     "item_name": "Nombre",
     "item_size": "Tamaño",
-    "item_sources": "Fuentes",
+    "item_seeders": "Semillas",
     "no_results": "No hay ningún resultado disponible",
     "download_card": {
       "title": "Iniciar descarga",
@@ -65,7 +44,9 @@
       "cancel": "Cancelar",
       "item_name": "Nombre",
       "item_size": "Tamaño",
-      "item_sources": "Fuentes"
+      "item_seeders": "Semillas",
+      "item_leechers": "Compis",
+      "item_tracker": "Tracker"
     }
   }
 }

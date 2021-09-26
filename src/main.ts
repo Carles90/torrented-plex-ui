@@ -27,7 +27,7 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
 // Configure languages
 const i18n = createI18n({
-    locale: 'ca',
+    locale: 'en',
     fallbackLocale: 'en',
     messages: {
         ca: require('./i18n/ca.json'),
